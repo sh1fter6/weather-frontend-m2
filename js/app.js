@@ -208,3 +208,26 @@ function renderCitiesGrid() {
     }
   });
 }
+
+function renderCityDetail() {
+  const detailContainer = document.getElementById("city-detail-container");
+  if (!detailContainer) return;
+  const savedId = localStorage.getItem("selectedCityId") || "1";
+  const city = CITIES_DATA.find(c => c.id == savedId) || CITIES_DATA[0];
+
+  detailContainer.innerHTML = `
+    <div class="row g-4">
+      <div class="col-12 col-lg-4">
+        <div class="card detail-card p-4 text-center">
+          <h2>${city.nombre}</h2>
+          <p class="display-3">${city.temperatura}°C</p>
+          <p>${city.condicion}</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+// Llamar detail en load
+document.addEventListener("DOMContentLoaded", () => {
+  renderCityDetail();
+});
