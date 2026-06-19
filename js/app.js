@@ -180,3 +180,31 @@ const CITIES_DATA = [
       { dia: "Domingo", temperatura: 16, condicion: "Ventoso", icono: "fa-solid fa-wind text-secondary" }
     ]
   }
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderCitiesGrid();
+});
+
+function renderCitiesGrid() {
+  const citiesGrid = document.getElementById("cities-grid");
+  if (!citiesGrid) return;
+  citiesGrid.innerHTML = CITIES_DATA.map(city => `
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card weather-card h-100 p-4 text-center">
+        <div class="card-body">
+          <h2 class="card-title h4">${city.nombre}</h2>
+          <p class="display-5 text-primary">${city.temperatura}°C</p>
+          <span>${city.condicion}</span>
+          <a href="detail.html?id=${city.id}" class="btn btn-primary btn-sm w-100 mt-3 city-btn" data-id="${city.id}">Ver Detalle</a>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  citiesGrid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".city-btn");
+    if (btn) {
+      localStorage.setItem("selectedCityId", btn.dataset.id);
+    }
+  });
+}

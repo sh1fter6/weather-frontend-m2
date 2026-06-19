@@ -1,0 +1,10 @@
+body {
+    font-family: sans-serif;
+    background: #f5f7fa;
+    min-height: 100vh;
+}
+.weather-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
