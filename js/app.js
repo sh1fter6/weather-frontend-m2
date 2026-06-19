@@ -180,54 +180,109 @@ const CITIES_DATA = [
       { dia: "Domingo", temperatura: 16, condicion: "Ventoso", icono: "fa-solid fa-wind text-secondary" }
     ]
   }
+];
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderCitiesGrid();
-});
+// Evento de inicio y configuración
+$(document).ready(function() {
+  let savedId = localStorage.getItem("selectedCityId");
+  if (savedId) {
+    $("#nav-detail-link").attr("href", "detail.html");
+  }
 
-function renderCitiesGrid() {
-  const citiesGrid = document.getElementById("cities-grid");
-  if (!citiesGrid) return;
-  citiesGrid.innerHTML = CITIES_DATA.map(city => `
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card weather-card h-100 p-4 text-center">
-        <div class="card-body">
-          <h2 class="card-title h4">${city.nombre}</h2>
-          <p class="display-5 text-primary">${city.temperatura}°C</p>
-          <span>${city.condicion}</span>
-          <a href="detail.html?id=${city.id}" class="btn btn-primary btn-sm w-100 mt-3 city-btn" data-id="${city.id}">Ver Detalle</a>
+  // Renderizado de la grilla de ciudades (Home)
+  for (let i = 0; i < CITIES_DATA.length; i++) {
+    let city = CITIES_DATA[i];
+    let cardHtml = `
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card weather-card h-100 p-4 text-center">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <h2 class="card-title h4 text-dark fw-bold mb-3">${city.nombre}</h2>
+              <div class="card-icon mb-3 text-center"><i class="${city.icono}"></i></div>
+              <p class="display-5 fw-bold text-primary mb-2">${city.temperatura}°C</p>
+              <span class="badge bg-info text-dark px-3 py-2 rounded-pill">${city.condicion}</span>
+            </div>
+            <div class="mt-4">
+              <button class="btn btn-primary btn-sm w-100 rounded-pill city-btn" data-id="${city.id}">Ver Detalle</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  `).join("");
+    `;
+    $("#cities-grid").append(cardHtml);
+  }
 
-  citiesGrid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".city-btn");
-    if (btn) {
-      localStorage.setItem("selectedCityId", btn.dataset.id);
-    }
+  // Evento de click para guardar seleccion
+  $(".city-btn").click(function() {
+    let idSeleccionado = $(this).data("id");
+    localStorage.setItem("selectedCityId", idSeleccionado);
+    window.location.href = "detail.html";
   });
-}
 
-function renderCityDetail() {
-  const detailContainer = document.getElementById("city-detail-container");
-  if (!detailContainer) return;
-  const savedId = localStorage.getItem("selectedCityId") || "1";
-  const city = CITIES_DATA.find(c => c.id == savedId) || CITIES_DATA[0];
+  // Renderizado del detalle de la ciudad
+  let idDetalle = localStorage.getItem("selectedCityId");
+  if (idDetalle) {
+    let city;
+    for (let i = 0; i < CITIES_DATA.length; i++) {
+      if (CITIES_DATA[i].id == idDetalle) {
+        city = CITIES_DATA[i];
+      }
+    }
 
-  detailContainer.innerHTML = `
-    <div class="row g-4">
-      <div class="col-12 col-lg-4">
-        <div class="card detail-card p-4 text-center">
-          <h2>${city.nombre}</h2>
-          <p class="display-3">${city.temperatura}°C</p>
-          <p>${city.condicion}</p>
+    if (city) {
+      let detailHtml = `
+        <div class="row g-4">
+          <div class="col-12 col-lg-4">
+            <article class="card detail-card p-4 text-center h-100 d-flex flex-column justify-content-center">
+              <h1 class="display-4 fw-bold text-dark mb-2">${city.nombre}</h1>
+              <div class="display-1 my-3"><i class="${city.icono}"></i></div>
+              <p class="display-3 fw-bold text-primary mb-2">${city.temperatura}°C</p>
+              <p class="fs-4 text-secondary mb-4">${city.condicion}</p>
+              <div class="row g-2 mt-2">
+                <div class="col-6">
+                  <div class="p-3 bg-weather-info text-start">
+                    <small class="text-muted d-block uppercase text-xs">Humedad</small>
+                    <span class="fs-5 fw-bold text-dark">${city.humedad}</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 bg-weather-info text-start">
+                    <small class="text-muted d-block uppercase text-xs">Viento</small>
+                    <span class="fs-5 fw-bold text-dark">${city.viento}</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="col-12 col-lg-8">
+            <section class="card detail-card p-4 h-100 d-flex flex-column justify-content-between">
+              <h2 class="h3 fw-bold text-dark mb-4">Pronóstico de la Semana</h2>
+              <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-7 g-3" id="forecast-grid">
+              </div>
+              <div class="mt-4 text-end">
+                <a href="index.html" class="btn btn-outline-secondary rounded-pill px-4">Volver al Inicio</a>
+              </div>
+            </section>
+          </div>
         </div>
-      </div>
-    </div>
-  `;
-}
-// Llamar detail en load
-document.addEventListener("DOMContentLoaded", () => {
-  renderCityDetail();
+      `;
+      $("#city-detail-container").html(detailHtml);
+
+      // Renderizado del pronostico diario
+      for (let j = 0; j < city.pronostico.length; j++) {
+        let day = city.pronostico[j];
+        let forecastHtml = `
+          <div class="col">
+            <div class="card forecast-card p-2 h-100 text-center">
+              <p class="text-muted fw-bold mb-1 small">${day.dia}</p>
+              <div class="fs-3 my-1"><i class="${day.icono}"></i></div>
+              <p class="fw-bold text-dark mb-1 small">${day.temperatura}°C</p>
+              <small class="text-secondary d-block" style="font-size: 0.7rem; line-height: 1.1;">${day.condicion}</small>
+            </div>
+          </div>
+        `;
+        $("#forecast-grid").append(forecastHtml);
+      }
+    }
+  }
 });
