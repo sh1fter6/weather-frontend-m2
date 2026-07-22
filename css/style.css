@@ -1,6 +1,7 @@
 body {
     font-family: 'Outfit', sans-serif;
     background: linear-gradient(135deg, #1661d1 0%, #93b7f0 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
