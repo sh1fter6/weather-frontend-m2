@@ -80,7 +80,7 @@
   }
 }
 
-// Componente BEM para detalle y pronóstico
+// Componente BEM para detalle, pronóstico y alertas (Módulo 5)
 .detail-card {
   border: none;
   border-radius: $border-radius-card;
@@ -89,6 +89,16 @@
 
   &__title {
     font-family: $font-family-title;
+  }
+}
+
+.weather-alert {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  &__icon {
+    font-size: 1.5rem;
   }
 }
 

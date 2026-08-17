@@ -147,6 +147,15 @@ main {
   font-family: "Lily Script One", cursive;
 }
 
+.weather-alert {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.weather-alert__icon {
+  font-size: 1.5rem;
+}
+
 .forecast-item {
   border: none;
   border-radius: 20px;
