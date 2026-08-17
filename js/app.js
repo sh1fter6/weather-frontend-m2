@@ -155,21 +155,22 @@ $(document).ready(function() {
   if ($("#cities-grid").length > 0) {
     for (let i = 0; i < lugares.length; i++) {
       let city = lugares[i];
+      let estadoMod = city.estadoActual.toLowerCase() === 'soleado' ? 'sunny' : (city.estadoActual.toLowerCase() === 'nublado' ? 'cloudy' : 'rainy');
       let cardHtml = `
         <div class="col-12 col-md-6 col-lg-4">
-          <div class="card weather-card h-100 p-4 text-center">
-            <div class="card-body d-flex flex-column justify-content-between">
+          <article class="card place-card place-card--${estadoMod} h-100 p-4 text-center">
+            <div class="card-body place-card__body d-flex flex-column justify-content-between">
               <div>
-                <h2 class="card-title h4 text-dark fw-bold mb-3">${city.nombre}</h2>
-                <div class="card-icon mb-3 text-center"><i class="${city.icono}"></i></div>
-                <p class="display-5 fw-bold text-primary mb-2">${city.tempActual}°C</p>
-                <span class="badge bg-info text-dark px-3 py-2 rounded-pill">${city.estadoActual}</span>
+                <h2 class="place-card__name text-dark fw-bold mb-3">${city.nombre}</h2>
+                <div class="place-card__icon mb-3 text-center"><i class="${city.icono}"></i></div>
+                <p class="place-card__temp text-primary mb-2">${city.tempActual}°C</p>
+                <span class="place-card__badge badge bg-info text-dark px-3 py-2 rounded-pill">${city.estadoActual}</span>
               </div>
               <div class="mt-4">
-                <button class="btn btn-primary btn-sm w-100 rounded-pill city-btn" data-id="${city.id}">Ver Detalle</button>
+                <button class="btn btn-primary btn-sm w-100 rounded-pill city-btn place-card__button" data-id="${city.id}">Ver Detalle</button>
               </div>
             </div>
-          </div>
+          </article>
         </div>
       `;
       $("#cities-grid").append(cardHtml);
