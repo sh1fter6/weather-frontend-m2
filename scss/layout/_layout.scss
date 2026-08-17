@@ -64,7 +64,39 @@ main {
   }
 }
 
+.weather-app {
+  &__grid-section {
+    width: 100%;
+  }
+}
+
 .weather-footer {
   margin-top: auto;
   font-family: $font-family-body;
+}
+
+// Media Queries de Responsividad (Requisito de la Rúbrica: <= 420px y >= 1024px)
+@media (max-width: $breakpoint-mobile) {
+  .weather-header__title {
+    font-size: 2.25rem;
+  }
+
+  .weather-app__main {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .place-card {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .weather-header__title {
+    font-size: 3.5rem;
+  }
+
+  .weather-app__main {
+    max-width: 1200px;
+  }
 }

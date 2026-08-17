@@ -55,11 +55,35 @@ main {
   font-family: "Outfit", sans-serif;
 }
 
+.weather-app__grid-section {
+  width: 100%;
+}
+
 .weather-footer {
   margin-top: auto;
   font-family: "Outfit", sans-serif;
 }
 
+@media (max-width: 420px) {
+  .weather-header__title {
+    font-size: 2.25rem;
+  }
+  .weather-app__main {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .place-card {
+    margin-bottom: 0.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .weather-header__title {
+    font-size: 3.5rem;
+  }
+  .weather-app__main {
+    max-width: 1200px;
+  }
+}
 .place-card {
   border: none;
   border-radius: 24px;
